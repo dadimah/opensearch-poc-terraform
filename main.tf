@@ -1,21 +1,37 @@
 ## Creating opensearch-poc-vpc and Defining the CIDR block 40.0.0.0/16.
-resource "aws_vpc" "opensearch-poc-vpc" {
+resource "aws_vpc" "opensearch-poc-vpc" {  
   cidr_block       = var.opensearch-poc-vpc-main-cidr
   instance_tenancy = "default"
-  tags             = local.tags
+  tags = merge(local.tags, {
+    Name = "opensearch-poc-vpc"
+    }
+  )
 }
 
 ## Creating two subnets in two availability zones.
+# Declare the data source
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
 resource "aws_subnet" "subnet-az1" {
-  vpc_id     = aws_vpc.opensearch-poc-vpc
+  availability_zone = data.aws_availability_zones.available.names[0]
+  vpc_id     = aws_vpc.opensearch-poc-vpc.id
   cidr_block = var.opensearch-poc-subnet-az1
-  tags       = local.tags
+  tags = merge(local.tags, {
+    Name = "opensearch-vpc-subnet-az1"
+    }
+  )
 }
 
 resource "aws_subnet" "subnet-az2" {
-  vpc_id     = aws_vpc.opensearch-poc-vpc
+  availability_zone = data.aws_availability_zones.available.names[1]
+  vpc_id     = aws_vpc.opensearch-poc-vpc.id
   cidr_block = var.opensearch-poc-subnet-az2
-  tags       = local.tags
+  tags = merge(local.tags, {
+    Name = "opensearch-vpc-subnet-az2"
+    }
+  )
 }
 
 ## Create OpenSearch-POC Security Group
@@ -28,7 +44,7 @@ resource "aws_security_group" "opensearh-poc-sg" {
     description = "Allow Inbound traffic to Opensearch Domain"
     from_port   = 443
     to_port     = 443
-    protocol    = "https"
+    protocol    = "tcp"
     cidr_blocks = [aws_vpc.opensearch-poc-vpc.cidr_block]
   }
 
@@ -39,5 +55,8 @@ resource "aws_security_group" "opensearh-poc-sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = local.tags
+  tags = merge(local.tags, {
+    Name = "opensearch-vpc-sg"
+    }
+  )
 }

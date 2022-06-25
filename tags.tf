@@ -1,6 +1,6 @@
 locals {
   tags = {
     ManagedBy   = "jenkins_pipeline"
-    # jira_ticket = "BBDO-9007"
+    jira_ticket = "BBDO-9007"
   }
 }

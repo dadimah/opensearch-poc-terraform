@@ -109,15 +109,15 @@ variable "saml_roles_key" {
   default     = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
 }
 
-variable "saml_entity_id" {
-  description = "The unique Entity ID of the application in SAML Identity Provider."
-  type        = string
-}
+# variable "saml_entity_id" {
+#   description = "The unique Entity ID of the application in SAML Identity Provider."
+#   type        = string
+# }
 
-variable "saml_metadata_content" {
-  description = "The metadata of the SAML application in xml format."
-  type        = string
-}
+# variable "saml_metadata_content" {
+#   description = "The metadata of the SAML application in xml format."
+#   type        = string
+# }
 
 variable "saml_session_timeout" {
   description = "Duration of a session in minutes after a user logs in. Default is 60. Maximum value is 1,440."

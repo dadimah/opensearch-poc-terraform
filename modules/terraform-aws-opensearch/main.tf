@@ -44,10 +44,12 @@ resource "aws_elasticsearch_domain" "opensearch" {
 
   advanced_security_options {
     enabled                        = true
-    internal_user_database_enabled = false
+    internal_user_database_enabled = true
 
     master_user_options {
-      master_user_arn = (var.master_user_arn != "") ? var.master_user_arn : data.aws_caller_identity.current.arn
+      # master_user_arn = (var.master_user_arn != "") ? var.master_user_arn : data.aws_caller_identity.current.arn
+      master_user_name = "admin"
+      master_user_password = "Admin1234*"
     }
   }
 
@@ -74,23 +76,23 @@ resource "aws_elasticsearch_domain" "opensearch" {
   depends_on = [aws_iam_service_linked_role.es]
 }
 
-resource "aws_elasticsearch_domain_saml_options" "opensearch" {
-  domain_name = aws_elasticsearch_domain.opensearch.domain_name
+# resource "aws_elasticsearch_domain_saml_options" "opensearch" {
+#   domain_name = aws_elasticsearch_domain.opensearch.domain_name
 
-  saml_options {
-    enabled                 = true
-    subject_key             = var.saml_subject_key
-    roles_key               = var.saml_roles_key
-    session_timeout_minutes = var.saml_session_timeout
-    master_user_name        = var.saml_master_user_name
-    master_backend_role     = var.saml_master_backend_role
+#   saml_options {
+#     enabled                 = true
+#     subject_key             = var.saml_subject_key
+#     roles_key               = var.saml_roles_key
+#     session_timeout_minutes = var.saml_session_timeout
+#     master_user_name        = var.saml_master_user_name
+#     master_backend_role     = var.saml_master_backend_role
 
-    idp {
-      entity_id        = var.saml_entity_id
-      metadata_content = sensitive(replace(var.saml_metadata_content, "\ufeff", ""))
-    }
-  }
-}
+#     idp {
+#       entity_id        = var.saml_entity_id
+#       metadata_content = sensitive(replace(var.saml_metadata_content, "\ufeff", ""))
+#     }
+#   }
+# }
 
 resource "aws_route53_record" "opensearch" {
   zone_id = data.aws_route53_zone.opensearch.id

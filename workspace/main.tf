@@ -35,9 +35,13 @@ module "opensearch" {
       number_of_replicas = 1
     }
   }
-  # master_instance_type  = "r6g.large.elasticsearch"
+  master_instance_enabled = false
+  # master_instance_type  = "r6gd.large.search"
   # master_instance_count = "3"
-  # hot_instance_type     = "r6g.large.elasticsearch"
-  # hot_instance_count    = "2"
-  # availability_zones    = "2"
+  # hot_instance_type     = "t3.medium.elasticsearch"
+  hot_instance_count    = "1"
+  availability_zones    = "1"
+  warm_instance_enabled = false
+  master_user_arn       = "arn:aws:iam::593636450949:user/maheshd@dxc.com"
+  hot_instance_type     = "r6g.12xlarge.elasticsearch"
 }

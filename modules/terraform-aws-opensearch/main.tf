@@ -44,12 +44,12 @@ resource "aws_elasticsearch_domain" "opensearch" {
 
   advanced_security_options {
     enabled                        = true
-    internal_user_database_enabled = true
+    internal_user_database_enabled = false
 
     master_user_options {
-      # master_user_arn = (var.master_user_arn != "") ? var.master_user_arn : data.aws_caller_identity.current.arn
-      master_user_name = "admin"
-      master_user_password = "Admin1234*"
+      master_user_arn = (var.master_user_arn != "") ? var.master_user_arn : data.aws_caller_identity.current.arn
+      # master_user_name = "admin"
+      # master_user_password = "Admin1234*"
     }
   }
 
@@ -69,6 +69,11 @@ resource "aws_elasticsearch_domain" "opensearch" {
   encrypt_at_rest {
     enabled    = true
     kms_key_id = var.encrypt_kms_key_id
+  }
+
+  ebs_options {
+    ebs_enabled = "true"
+    volume_size = "10"    
   }
 
   tags = var.tags

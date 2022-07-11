@@ -29,19 +29,19 @@ module "opensearch" {
   # saml_entity_id        = local.saml_entity_id
   # saml_metadata_content = data.http.saml_metadata.body
 
-  indices = {
-    example-index = {
-      number_of_shards   = 2
-      number_of_replicas = 1
-    }
-  }
+  # indices = {
+  #   example-index = {
+  #     number_of_shards   = 2
+  #     number_of_replicas = 1
+  #   }
+  # }
   master_instance_enabled = false
   # master_instance_type  = "r6gd.large.search"
   # master_instance_count = "3"
-  # hot_instance_type     = "t3.medium.elasticsearch"
+  # hot_instance_type     = "m5.large.elasticsearch"
   hot_instance_count    = "1"
   availability_zones    = "1"
   warm_instance_enabled = false
   master_user_arn       = "arn:aws:iam::593636450949:user/maheshd@dxc.com"
-  hot_instance_type     = "r6g.12xlarge.elasticsearch"
+  hot_instance_type     = "m5.large.elasticsearch"
 }
